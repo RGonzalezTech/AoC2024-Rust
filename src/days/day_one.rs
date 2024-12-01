@@ -31,13 +31,10 @@ pub mod puzzle_one {
         }
 
         print_status("Calculating sum of distances");
-        idx = 0; // reset idx
         let mut sum_of_diffs: u32 = 0;
-        while idx < distances.len() {
-            sum_of_diffs += distances[idx];
-            idx += 1;
+        for distance in distances.iter() {
+            sum_of_diffs += *distance;
         };
-
         print_result(&sum_of_diffs.to_string());
     }
 }
