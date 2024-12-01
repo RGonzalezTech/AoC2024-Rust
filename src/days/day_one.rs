@@ -78,12 +78,12 @@ pub mod puzzle_two {
             if !had_count {
                 // skip
                 continue;
-            } else {
-                // Should have a value, cause we just checked
-                let id_count = right_list_counts.get(location_id).expect("🔴 Could not get count on request");
-                let similarity_score = location_id * id_count;
-                total_similarity += similarity_score; // sum up
             };
+
+            // Should have a value, cause we just checked
+            let id_count = right_list_counts.get(location_id).expect("🔴 Could not get count on request");
+            let similarity_score = location_id * id_count; // calculate similarity score per puzzle rules
+            total_similarity += similarity_score; // sum up
         };
 
         print_result(&total_similarity.to_string());
@@ -94,7 +94,7 @@ pub mod puzzle_two {
 pub fn read_lists() -> (Vec<u32>, Vec<u32>) {
     let app_dir = std::env::current_dir().expect("🔴 Could not get current directory");
     let list_file_path = app_dir.join(
-        PathBuf::from("src/utils/day_one_notes.txt")
+        PathBuf::from("src/days/day_one_notes.txt")
     );
 
     let content = fs::read_to_string(list_file_path).expect("🔴 Could not read file");
