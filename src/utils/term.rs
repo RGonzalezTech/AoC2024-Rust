@@ -1,5 +1,6 @@
 pub fn print_start(label: &str) -> () {
-    println!("⏳️ {0}...", label)
+    // Add some space before each run
+    println!("\n\n⏳️ {0}...", label)
 }
 
 pub fn print_status(message: &str) -> () {
