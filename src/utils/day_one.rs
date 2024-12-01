@@ -2,7 +2,7 @@ use std::{fs, path::PathBuf};
 
 pub mod puzzle_one {
     use crate::utils::term::{print_result, print_status, print_start};
-    use crate::utils::day_one::read_lists;
+    use super::read_lists;
 
     // https://adventofcode.com/2024/day/1
     // Calculate the total absolute difference between each pair of 
@@ -43,9 +43,50 @@ pub mod puzzle_one {
 }
 
 pub mod puzzle_two {
-    #[allow(dead_code)]
+    use std::collections::HashMap;
+
+    use crate::utils::term::{print_result, print_status, print_start};
+    use super::read_lists;
+
+    // https://adventofcode.com/2024/day/1#part2
+    // Count occurences in right list of each number in the left list
     pub fn solve() -> () {
-        panic!("Not implemented");
+        print_start("Day 1: Puzzle 2");
+
+        print_status("Loading lists");
+        let ( left_list, right_list ) = read_lists();
+
+        print_status("Pre-Counting Right List Occurences");
+        let mut right_list_counts : HashMap<u32, u32> = HashMap::new();
+        for location_id in right_list.iter() {
+            let has_key = right_list_counts.contains_key(&location_id);
+            if !has_key {
+                // first occurence, count = 1
+                right_list_counts.insert(*location_id, 1);
+            } else {
+                // Should have a value, cause we just checked
+                let current_count = right_list_counts.get(location_id).expect("🔴 Could not get current-count");
+                let new_count = *current_count + 1; // increment count
+                right_list_counts.insert(*location_id, new_count); // update count
+            };
+        };
+
+        print_status("Summing similarity scores");
+        let mut total_similarity : u32 = 0;
+        for location_id in left_list.iter() {
+            let had_count = right_list_counts.contains_key(location_id);
+            if !had_count {
+                // skip
+                continue;
+            } else {
+                // Should have a value, cause we just checked
+                let id_count = right_list_counts.get(location_id).expect("🔴 Could not get count on request");
+                let similarity_score = location_id * id_count;
+                total_similarity += similarity_score; // sum up
+            };
+        };
+
+        print_result(&total_similarity.to_string());
     }
 }
 
